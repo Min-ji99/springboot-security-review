@@ -2,6 +2,8 @@ package com.springboot.security.controller;
 
 import com.springboot.security.domain.dto.UserJoinRequest;
 import com.springboot.security.domain.dto.UserJoinResponse;
+import com.springboot.security.domain.dto.UserLoginRequest;
+import com.springboot.security.domain.dto.UserLoginResponse;
 import com.springboot.security.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,5 +24,10 @@ public class UserController {
     public ResponseEntity<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest){
         UserJoinResponse userJoinResponse=userService.join(userJoinRequest);
         return ResponseEntity.ok().body(userJoinResponse);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
+        String token=userService.login(userLoginRequest);
+        return ResponseEntity.ok().body(new UserLoginResponse(token));
     }
 }
