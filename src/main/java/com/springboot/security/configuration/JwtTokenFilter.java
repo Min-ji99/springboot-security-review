@@ -1,5 +1,6 @@
 package com.springboot.security.configuration;
 
+import com.springboot.security.domain.User;
 import com.springboot.security.service.UserService;
 import com.springboot.security.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +47,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        //Token Claim애서 username 꺼내기
+        String username=JwtTokenUtil.getUsername(token, secretKey);
+
+        //UserRole 바인딩
+        User user=userService.getUserByUserName(username);
+
         //문열어주기
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken("", null, List.of(new SimpleGrantedAuthority("USER"))    );
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(), null, List.of(new SimpleGrantedAuthority(user.getUserRole().name()))    );
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);

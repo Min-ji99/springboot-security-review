@@ -1,6 +1,7 @@
 package com.springboot.security.domain.dto;
 
 import com.springboot.security.domain.User;
+import com.springboot.security.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class UserJoinRequest {
                 .username(username)
                 .password(password)
                 .email(email)
+                .userRole(UserRole.USER)
                 .build();
     }
 }

@@ -7,9 +7,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 
 public class JwtTokenUtil {
-    public static String createToken(String userName, String secretKey, long expireTimeMs){
+    public static String createToken(String username, String secretKey, long expireTimeMs){
         Claims claims = Jwts.claims();
-        claims.put("userName", userName);
+        claims.put("username", username);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -22,6 +22,9 @@ public class JwtTokenUtil {
     public static boolean isExpired(String token, String secretKey) {
         Date expiredDate=extractClaims(token, secretKey).getExpiration();
         return expiredDate.before(new Date());
+    }
+    public static String getUsername(String token, String secretKey){
+        return extractClaims(token, secretKey).get("userName").toString();
     }
 
     private static Claims extractClaims(String token, String secretKey) {

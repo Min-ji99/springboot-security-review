@@ -50,4 +50,8 @@ public class UserService {
         }
         return JwtTokenUtil.createToken(userLoginRequest.getUsername(), secretKey, expireTimeMs);
     }
+    public User getUserByUserName(String username){
+        return userRepository.findByUsername(username)
+                .orElseThrow(()->new AppException(ErrorCode.NOTFOUND_USER_NAME, ""));
+    }
 }
